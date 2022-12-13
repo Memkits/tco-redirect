@@ -1,7 +1,7 @@
 
 {}
   :configs $ {} (:init-fn |app.main/main!) (:port 6001) (:reload-fn |app.main/reload!) (:version |0.0.1)
-    :modules $ [] |calcit.std/ |skir/ |lilac/
+    :modules $ [] |skir/ |lilac/
   :entries $ {}
     :test $ {} (:init-fn |app.test/main!) (:reload-fn |app.test/reload!)
       :modules $ [] |calcit-test/
