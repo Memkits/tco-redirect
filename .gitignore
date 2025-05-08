@@ -6,3 +6,6 @@ js-out/
 node_modules
 
 example/
+
+
+.DS_Store
