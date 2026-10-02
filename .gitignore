@@ -3,6 +3,8 @@
 .calcit-error.cirru
 
 js-out/
+.calcit/
+.yarn/
 node_modules
 
 example/
