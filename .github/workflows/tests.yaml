@@ -6,14 +6,39 @@ on:
       - main
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-
-    - uses: calcit-lang/setup-cr@0.0.8
-
-    - name: "test"
-      run: caps --ci && cr -1 js
-
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+    - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+      with:
+        node-version: 24
+        package-manager-cache: false
+    - name: Enable Yarn
+      run: |
+        corepack enable
+        corepack prepare yarn@4.18.0 --activate
+    - uses: calcit-lang/setup-calcit@ca701be5a471759e442aa053cd100720bbe1f09f # v1.5.0
+      with:
+        tools: calcit,caps
+        caps-version: "0.1.1"
+    - name: Install dependencies
+      run: |
+        set -euo pipefail
+        caps --ci
+        yarn install --immutable
+        caps verify --toolchain
+    - name: Check and compile
+      run: |
+        set -euo pipefail
+        calcit edit format
+        git diff --exit-code -- calcit.cirru
+        yarn check
+        calcit analyze check-public --ns app.main --summary-only --format json
+        yarn build
