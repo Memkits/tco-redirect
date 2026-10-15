@@ -1,6 +1,6 @@
 
 {}
-  :calcit-version |0.27.0
+  :calcit-version |0.30.0
   :version |0.0.7
   :dependencies $ {}
-    |calcit-lang/skir |0.0.29-alpha.2
+    |calcit-lang/skir |0.0.29
