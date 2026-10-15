@@ -3,4 +3,4 @@
   :calcit-version |0.30.0
   :version |0.0.7
   :dependencies $ {}
-    |calcit-lang/skir |0.0.29
+    |calcit-lang/skir |0.0.30
