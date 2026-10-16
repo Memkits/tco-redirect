@@ -28,10 +28,11 @@ jobs:
       with:
         tools: calcit,caps
         caps-version: "0.1.1"
+        deps-file: deps.cirru
     - name: Install dependencies
       run: |
         set -euo pipefail
-        caps --ci
+        caps --strict --ci
         yarn install --immutable
         caps verify --toolchain
     - name: Check and compile
@@ -40,5 +41,5 @@ jobs:
         calcit edit format
         git diff --exit-code -- calcit.cirru
         yarn check
-        calcit analyze check-public --ns app.main --summary-only --format json
+        calcit --check-only --ns app.main --summary-only --format edn
         yarn build

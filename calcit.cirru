@@ -52,7 +52,7 @@
           :schema $ :: 'Trait
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
-            skir/create-server! on-request! $ %some $ {} (:port 11029)
+            skir/create-server! on-request! $ Option :some $ {} (:port 11029)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'js-ffi.node/NodeServerHost)
             :args $ []
@@ -63,7 +63,7 @@
               get (:query req) |url
               (:some value)
                 let
-                    url $ assert-type value 'String
+                    url $ decode-map-as value 'String
                     client $ unsafe-coerce axios 'app.main/Axios
                     options $ js-object (:maxRedirects 0)
                       :validateStatus $ fn (status)
