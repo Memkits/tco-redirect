@@ -8,7 +8,7 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### Workflow
 
-使用 Calcit 0.30.1-alpha.5、Caps 0.1.1、Node.js 24、Yarn 4.18.0：
+使用正式 Calcit 0.30.1、Caps 0.1.1、Node.js 24、Yarn 4.18.0：
 
 ```sh
 caps --strict --ci
@@ -22,15 +22,15 @@ corepack yarn build
 
 源码使用 `calcit.cirru`、`deps.cirru`；生成的 `js-out/` 不提交。历史 `test` 入口仍引用仓库中不存在的 `app.test`，不属于可运行入口；CI 直接检查实际服务入口和公开定义，不依赖旧 `calcit-test`。
 
-Skir 固定使用已发布的正式版 `0.0.31`，不使用浮动 main/hash 或预发布模块；应用和 Skir 的 CLI / `@calcit/procs` 配对为 `0.30.1-alpha.5`。传递 Router `0.8.36`、Respo `0.16.122` 仍声明 alpha.4，js-ffi 固定为 `0.2.3`；不应把应用版本配对称为整个依赖图版本一致。
+Skir 固定使用已发布正式版 `0.0.33`，应用 CLI / `@calcit/procs` 配对正式 `0.30.1`；传递 Router `0.8.38`、Respo `0.16.126`、js-ffi `0.2.6`。不使用浮动 main/hash 或 alpha，不覆盖模块解析来掩盖依赖图冲突。
 
-截至 2026-10-21，0.30.1 正式 release 尚无 macOS 资产；本轮使用实际可验收的 alpha.5，不宣称完成正式版跨平台验收。服务部署前需按新 lockfile 安装依赖；不自动合并、重启或改动 PM2 路径。
+本轮构建和门禁使用官方 Linux 正式 `0.30.1`，不声称 macOS 正式编译验收。服务部署前需按新 lockfile 安装依赖；不自动合并、部署、重启或改动 PM2 路径。浏览器扩展协议与内容脚本不改，没有前端 COS 迁移。
 
-已有端口配置使用显式 `Option :some`，查询参数通过 `decode-map-as` 检查字符串；本轮 Snapshot 和原 CI 均不改动。0.30.0/Skir 0.0.30 与候选的全定义检查均为 10/10，公开定义 7/7，默认 JS 入口检查及构建通过，deprecated calls=0。
+已有端口配置使用显式 `Option :some`，查询参数通过 `decode-map-as` 检查字符串；本轮 Snapshot 不改。源码仍有 Axios 对象与错误 String 转换两处显式 FFI 强转，不能把版本配对称为 unsafe 清零或完全类型证明。CI 增加实际默认入口的全定义检查、immutable 清单守卫，Snapshot 使用 quiet diff，不输出原始源码；上传本次 Node 产物供独立回环验收，不加入生成代码、测试框架或重复验证脚本。
 
-缺少参数、重定向、上游未返回 Location、上游失败这四类真实 HTTP 响应在两版工具链和正式依赖图下逐字段相同，使用自建回环服务和合成请求，验收后全部关闭。无 Location 时仍保留原有 302 和空 Location header，不借迁移改变协议。Axios 同步响应/Promise 返回的开放边界仍使一个定义为 partial（其余六个 full），不伪造完整类型。
+历史回环验收覆盖缺少参数、重定向、上游未返回 Location、上游失败，不能替代本轮正式依赖图的验收。无 Location 时原有协议为 302 和空 Location header，不借迁移改变协议。Axios 同步响应/Promise 返回的开放边界仍保留，不伪造完整类型。
 
-历史无效 `test` 入口仍会使 `calcit fix --workflow strict --verify` 在读取缺失 `calcit-test` 时失败；两版均已复现，不能把默认入口或 CI 通过称为全项目 strict 通过。当前 CLI 缺少删除入口的公开结构化操作，跟踪 [Calcit #2212](https://github.com/calcit-lang/calcit/issues/2212)，不手改 Snapshot 或添加空测试掩盖问题。
+历史无效 `test` 入口仍引用缺失 `calcit-test`，不能把默认入口 CI 通过称为全项目 strict 通过。该入口删除 API 已随 [Calcit #2271](https://github.com/calcit-lang/calcit/pull/2271) 合入 **0.31.0**，不是正式 0.30.1 的能力；原需求 [#2104](https://github.com/calcit-lang/calcit/issues/2104) / 重复 [#2212](https://github.com/calcit-lang/calcit/issues/2212) 已关闭，不再误称上游尚未实现。当前目标限定 0.30.1，因此保留这项明确未完成边界，不手改 Snapshot、借用 0.31 CLI 写入、删除门禁或添加空测试掩盖问题。没有真实附带测试，不把空测试列表报告为通过。
 
 ### License
 
