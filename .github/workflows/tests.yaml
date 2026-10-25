@@ -35,11 +35,19 @@ jobs:
         caps --strict --ci
         yarn install --immutable
         caps verify --toolchain
+        git diff --quiet -- deps.cirru package.json yarn.lock .yarnrc.yml
     - name: Check and compile
       run: |
         set -euo pipefail
         calcit edit format
-        git diff --exit-code -- calcit.cirru
+        git diff --quiet -- calcit.cirru
         yarn check
+        calcit --check-only --all-defs
         calcit --check-only --ns app.main --summary-only --format edn
         yarn build
+    - uses: actions/upload-artifact@v7.0.2
+      with:
+        name: node-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+        path: js-out
+        if-no-files-found: error
+        retention-days: 30
