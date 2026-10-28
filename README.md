@@ -8,6 +8,36 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### Workflow
 
+使用者影响：CLI / `@calcit/procs` 同步到正式 **0.31.0**，Skir 同步到已发布
+**0.0.34**。传递 Router **0.9.0-alpha.3**、Respo **0.17.0-alpha.4**、JS-FFI
+**0.2.7**；Router/Respo 仍为精确 alpha tag，不代表整张图均为稳定版。
+部署前需重新安装依赖并生成 JS；原端口 11029、PM2 工作目录和扩展协议不变。
+这是 Node 服务，没有前端 COS/CDN，本轮不部署或重启服务。
+
+通过官方配置 API 移除了指向不存在的 `app.test` / `calcit-test` 的历史 test 入口，
+没有删除任何真实测试。缺失 Location 的内部响应值改为明确空字符串，取代隐式 nil 分支；
+原 Skir 会把 nil 转为空 header，HTTP 行为仍为 302 和空 Location，不改为省略该 header。
+真实回环验收覆盖缺少参数、有效重定向、无 Location、上游失败四种情况，全部通过。
+
+使用正式 0.31.0 CLI、Caps 0.1.1、Node 24、Yarn 4.18.0：
+
+```sh
+caps --strict --ci
+corepack yarn install --immutable
+caps verify --toolchain
+corepack yarn check
+calcit --check-only --all-defs
+calcit fix --workflow strict --verify --format json
+corepack yarn build
+```
+
+完整 strict 和全定义检查通过；CI 保留原门禁并加入完整 strict，无新验证脚本。
+两处原 Axios / String FFI 强转仍存在，开放 Promise 边界由
+[#6](https://github.com/Memkits/tco-redirect/issues/6) 跟踪，不声称零类型债务。
+回环验收不访问公开 t.co，也不代表生产服务验收。以下为先前迁移记录。
+
+### 历史：0.30.1 迁移
+
 使用正式 Calcit 0.30.1、Caps 0.1.1、Node.js 24、Yarn 4.18.0：
 
 ```sh

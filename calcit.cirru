@@ -2,14 +2,10 @@
 {}
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |app
-  :entries $ {}
-    :default $ {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :node)
+  :entries $ {} $ :default
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :node)
       :feature-policy $ {}
       :modules $ [] |skir/
-      :type-slots $ {}
-    :test $ {} (:description |) (:init-fn 'app.test/main!) (:mode :native) (:reload-fn 'app.test/reload!)
-      :feature-policy $ {}
-      :modules $ [] |calcit-test/
       :type-slots $ {}
   :files $ {} $ 'app.main
     %{} 'FileEntry
@@ -81,7 +77,7 @@
                           location $ .-location $ .-headers response
                         {} (:code 302) (:message |OK)
                           :headers $ {} $ :location
-                            if (js-nullish? location) nil location
+                            .unwrap-or (js-nullish->option location) |
                           :body nil
                   mapped .catch $ fn (err)
                     hint-fn $ {}

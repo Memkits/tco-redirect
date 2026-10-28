@@ -43,6 +43,7 @@ jobs:
         git diff --quiet -- calcit.cirru
         yarn check
         calcit --check-only --all-defs
+        calcit fix --workflow strict --verify --format json | jq -e '.data.workflow.status == "passed" and .diagnostics == []'
         calcit --check-only --ns app.main --summary-only --format edn
         yarn build
     - uses: actions/upload-artifact@v7.0.2
