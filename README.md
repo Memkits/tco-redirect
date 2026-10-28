@@ -8,18 +8,17 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### Workflow
 
-使用者影响：CLI / `@calcit/procs` 同步到正式 **0.31.0**，Skir 同步到已发布
-**0.0.34**。传递 Router **0.9.0-alpha.3**、Respo **0.17.0-alpha.4**、JS-FFI
-**0.2.7**；Router/Respo 仍为精确 alpha tag，不代表整张图均为稳定版。
-部署前需重新安装依赖并生成 JS；原端口 11029、PM2 工作目录和扩展协议不变。
-这是 Node 服务，没有前端 COS/CDN，本轮不部署或重启服务。
+使用者影响：本地候选面向正式 CLI / `@calcit/procs` **0.32.0**、Skir **0.0.35**，
+以及传递 Router **0.9.0**、Respo **0.17.0** 和 JS-FFI **0.2.8**。
+Skir/Router/Respo 正式 tag 尚待发布；当前用明确标注的本地候选图验收，不是 Caps
+正式安装通过，也不是可部署状态。正式依赖发布后必须重新安装并执行原全部门禁。
 
-通过官方配置 API 移除了指向不存在的 `app.test` / `calcit-test` 的历史 test 入口，
-没有删除任何真实测试。缺失 Location 的内部响应值改为明确空字符串，取代隐式 nil 分支；
-原 Skir 会把 nil 转为空 header，HTTP 行为仍为 302 和空 Location，不改为省略该 header。
-真实回环验收覆盖缺少参数、有效重定向、无 Location、上游失败四种情况，全部通过。
+本次用官方 formatter 更新类型标注，七个定义的 schema 保持。原端口11029、PM2
+工作目录、扩展协议、302及空 Location 行为不变。没有前端 COS/CDN，不部署或重启服务。
+两处既有 Axios / String FFI 强转继续由 [#6](https://github.com/Memkits/tco-redirect/issues/6)
+跟踪，不放宽类型门禁，不声称零类型债务。
 
-使用正式 0.31.0 CLI、Caps 0.1.1、Node 24、Yarn 4.18.0：
+正式依赖就绪后的验收命令：
 
 ```sh
 caps --strict --ci
@@ -31,10 +30,8 @@ calcit fix --workflow strict --verify --format json
 corepack yarn build
 ```
 
-完整 strict 和全定义检查通过；CI 保留原门禁并加入完整 strict，无新验证脚本。
-两处原 Axios / String FFI 强转仍存在，开放 Promise 边界由
-[#6](https://github.com/Memkits/tco-redirect/issues/6) 跟踪，不声称零类型债务。
-回环验收不访问公开 t.co，也不代表生产服务验收。以下为先前迁移记录。
+候选图验证保留缺少参数、有效重定向、无 Location 和上游失败四个回环场景；
+不访问公开 t.co 或生产端口。没有真实附带测试，不把空测试列表报告为通过。
 
 ### 历史：0.30.1 迁移
 
