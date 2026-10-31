@@ -1,7 +1,7 @@
 {
   "version": "0.0.7",
   "dependencies": {
-    "@calcit/procs": "0.32.0",
+    "@calcit/procs": "0.32.1",
     "axios": "1.20.0"
   },
   "packageManager": "yarn@4.18.0",
