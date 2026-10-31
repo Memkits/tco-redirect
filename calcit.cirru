@@ -12,47 +12,37 @@
       :defs $ {}
         'Axios $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait Axios
-            .get $ :: 'Fn $ {}
-              :args $ [] 'Axios 'String 'JsObject
-              :return 'app.main/PendingResponse
+            .get $ quote $ Fn Axios String JsObject (-> app.main/PendingResponse)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'Headers $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait Headers
-            :location $ :: 'JsNullish 'String
+            :location $ quote $ JsNullish String
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'PendingResponse $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait PendingResponse
-            .then $ :: 'Fn $ {}
-              :args $ [] 'PendingResponse $ :: 'Fn
-                {}
-                  :args $ [] 'app.main/Response
-                  :return $ :: 'Map 'Tag 'Dynamic
-              :return 'app.main/PendingResponse
-            .catch $ :: 'Fn $ {}
-              :args $ [] 'PendingResponse $ :: 'Fn
-                {}
-                  :args $ [] 'JsObject
-                  :return $ :: 'Map 'Tag 'Dynamic
-              :return 'JsObject
+            .then $ quote $ Fn PendingResponse
+              Fn app.main/Response $ -> $ Map Tag Dynamic
+              -> app.main/PendingResponse
+            .catch $ quote $ Fn PendingResponse
+              Fn JsObject $ -> $ Map Tag Dynamic
+              -> JsObject
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'Response $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait Response (:headers 'app.main/Headers)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             skir/create-server! on-request! $ Option :some $ {} (:port 11029)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'js-ffi.node/NodeServerHost)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> js-ffi.node/NodeServerHost) (:features :js-ffi)
         'on-request! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-request! (req res)
             match
@@ -63,16 +53,13 @@
                     client $ unsafe-coerce axios 'app.main/Axios
                     options $ js-object (:maxRedirects 0)
                       :validateStatus $ fn (status)
-                        hint-fn $ {}
-                          :args $ [] 'Number
-                          :return 'Bool
+                        hint-fn $ Fn Number $ -> Bool
                         and (>= status 200) (< status 500)
                     pending $ client .get url options
                     mapped $ pending .then $ fn (response)
-                      hint-fn $ {}
-                        :args $ [] 'app.main/Response
-                        :return $ :: 'Map 'Tag 'Dynamic
-                        :features $ #{} :js-ffi
+                      hint-fn $ Fn app.main/Response
+                        -> $ Map Tag Dynamic
+                        :features :js-ffi
                       let
                           location $ .-location $ .-headers response
                         {} (:code 302) (:message |OK)
@@ -80,15 +67,12 @@
                             .unwrap-or (js-nullish->option location) |
                           :body nil
                   mapped .catch $ fn (err)
-                    hint-fn $ {}
-                      :args $ [] 'JsObject
-                      :return $ :: 'Map 'Tag 'Dynamic
-                      :features $ #{} :js-ffi
+                    hint-fn $ Fn JsObject
+                      -> $ Map Tag Dynamic
+                      :features :js-ffi
                     let
-                        stringify $ unsafe-coerce js/String $ :: 'Fn
-                          {}
-                            :args $ [] 'JsObject
-                            :return 'String
+                        stringify $ unsafe-coerce js/String $ quote
+                          Fn JsObject $ -> String
                         message $ stringify err
                       println |failed message
                       {} (:code 500) (:message "|Fetch failed")
@@ -99,14 +83,11 @@
                   :headers $ {} $ :Content-Type |text/plain
                   :body $ {} $ :message "|No URL provided"
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'skir.schema/Request 'js-ffi.node/NodeServerResponseHost
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn skir.schema/Request js-ffi.node/NodeServerResponseHost (-> Dynamic) (:features :js-ffi)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () (println "|nothing yet") &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
+          :schema $ quote $ Fn (-> Unit)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (skir.core :as skir) (|axios :default axios)
