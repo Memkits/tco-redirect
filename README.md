@@ -8,7 +8,7 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### 使用者影响
 
-本候选同步到正式 Calcit CLI / `@calcit/procs` **0.34.1**，使用已发布 Skir **0.0.36**。
+本候选同步到正式 Calcit CLI / `@calcit/procs` **0.34.1**，使用已发布 Skir **0.0.37**。
 传递依赖使用正式 Router **0.10.0**、Respo **0.18.0** 和 JS-FFI **0.2.9**。服务部署前需重新安装依赖并生成 JS。
 
 本次同步工具链和正式依赖，七个定义的类型标注已符合新版本要求，源码保持。原端口 **11029**、PM2
@@ -16,9 +16,7 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 缺少 url 参数仍返回 400；上游失败仍返回 500；重定向仍返回 302。上游没有 Location 时仍返回
 302 和空 Location header，不借迁移改为省略该 header。两处既有 Axios / String FFI 强转及开放
-Promise 边界仍由 [#6](https://github.com/calcit-lang/tco-redirect/issues/6) 跟踪。Skir 的 QueryValue union
-尚未传播到 Request.query，见 [上游 #44](https://github.com/calcit-lang/skir/issues/44)。这些开放边界
-不满足封闭 union 要求，本次保留受检入口，不声称零类型债务。
+Promise 边界仍由 [#6](https://github.com/calcit-lang/tco-redirect/issues/6) 跟踪。Skir 的 Request.query 已采用 String / List String 的 QueryValue union，见 [上游 #44](https://github.com/calcit-lang/skir/issues/44)。本服务只接受单个 url，继续通过原 String 解码拒绝重复参数的 List 值。Axios/Promise 和响应 Map 仍为真实开放边界，不将其伪装成封闭 union，不声称零类型债务。
 
 ### 开发与验收
 
