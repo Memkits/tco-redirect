@@ -8,8 +8,8 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### 使用者影响
 
-本候选同步到正式 Calcit CLI / `@calcit/procs` **0.34.1**，使用已发布 Skir **0.0.37**。
-传递依赖使用正式 Router **0.10.0**、Respo **0.18.0** 和 JS-FFI **0.2.9**。服务部署前需重新安装依赖并生成 JS。
+本候选同步到正式 Calcit CLI / `@calcit/procs` **0.34.2**，使用已发布 Skir **0.0.38**。
+传递依赖使用正式 Router **0.11.1**、Respo **0.19.1** 和 JS-FFI **0.2.10**。服务部署前需重新安装依赖并生成 JS。
 
 本次同步工具链和正式依赖，七个定义的类型标注已符合新版本要求，源码保持。原端口 **11029**、PM2
 工作目录、扩展协议和 HTTP 响应保持；本 PR 不合并、部署或重启服务。Node 服务没有前端，不添加 COS/CDN。
@@ -20,7 +20,7 @@ Promise 边界仍由 [#6](https://github.com/calcit-lang/tco-redirect/issues/6) 
 
 ### 开发与验收
 
-使用 Node 24、Yarn 4.18.0、Caps 0.1.1 和正式 Calcit 0.34.1：
+使用 Node 24、Yarn 4.18.0、Caps 0.1.1 和正式 Calcit 0.34.2：
 
 ```sh
 caps --strict --ci
