@@ -12,27 +12,36 @@
       :defs $ {}
         'Axios $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait Axios
-            .get $ quote $ Fn Axios String JsObject (-> app.main/PendingResponse)
+            .get $ Fn Axios String JsObject $ -> app.main/PendingResponse
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
           :schema $ quote Trait
         'Headers $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait Headers
-            :location $ quote $ JsNullish String
+            :location $ JsNullish String
+          :examples $ []
+          :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
+          :schema $ quote Trait
+        'MappedResponse $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ deftrait MappedResponse
+            .catch $ Fn MappedResponse
+              Fn Dynamic $ -> $ Map Tag (JsNullish app.main/RedirectField)
+              -> js-ffi.shared/PromiseHost
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
           :schema $ quote Trait
         'PendingResponse $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait PendingResponse
-            .then $ quote $ Fn PendingResponse
-              Fn app.main/Response $ -> $ Map Tag Dynamic
-              -> app.main/PendingResponse
-            .catch $ quote $ Fn PendingResponse
-              Fn JsObject $ -> $ Map Tag Dynamic
-              -> JsObject
+            .then $ Fn PendingResponse
+              Fn app.main/Response $ -> $ Map Tag (JsNullish app.main/RedirectField)
+              -> app.main/MappedResponse
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
           :schema $ quote Trait
+        'RedirectField $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defunion RedirectField Number String (Map Tag String)
+          :examples $ []
+          :schema $ quote UnionDef
         'Response $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait Response (:headers 'app.main/Headers)
           :examples $ []
@@ -58,7 +67,7 @@
                     pending $ client .get url options
                     mapped $ pending .then $ fn (response)
                       hint-fn $ Fn app.main/Response
-                        -> $ Map Tag Dynamic
+                        -> $ Map Tag $ JsNullish app.main/RedirectField
                         :features :js-ffi
                       let
                           location $ .-location $ .-headers response
@@ -67,13 +76,11 @@
                             .unwrap-or (js-nullish->option location) |
                           :body nil
                   mapped .catch $ fn (err)
-                    hint-fn $ Fn JsObject
-                      -> $ Map Tag Dynamic
+                    hint-fn $ Fn Dynamic
+                      -> $ Map Tag $ JsNullish app.main/RedirectField
                       :features :js-ffi
                     let
-                        stringify $ unsafe-coerce js/String $ quote
-                          Fn JsObject $ -> String
-                        message $ stringify err
+                        message $ js-ffi.contract/expect-string |Axios-rejection $ js/String err
                       println |failed message
                       {} (:code 500) (:message "|Fetch failed")
                         :headers $ {} $ :Content-Type |text/plain
