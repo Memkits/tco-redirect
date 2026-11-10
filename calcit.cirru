@@ -59,7 +59,7 @@
               (:some value)
                 let
                     url $ decode-map-as value 'String
-                    client $ unsafe-coerce axios 'app.main/Axios
+                    client $ js-cast axios 'app.main/Axios
                     options $ js-object (:maxRedirects 0)
                       :validateStatus $ fn (status)
                         hint-fn $ Fn Number $ -> Bool
