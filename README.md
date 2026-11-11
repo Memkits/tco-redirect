@@ -8,10 +8,10 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### 使用者影响
 
-本候选同步到正式 Calcit CLI / `@calcit/procs` **0.40.0**，使用已发布 Skir **0.0.40**。
+本候选同步到正式 Calcit CLI / `@calcit/procs` **0.41.0**，使用已发布 Skir **0.0.40**。
 传递依赖使用正式 Router **0.12.2**、Respo **0.19.5** 和 JS-FFI **0.2.13**。服务部署前需重新安装依赖并生成 JS。
 
-本次同步工具链和正式依赖。Promise 的成功和失败回调使用 `RedirectField` union，分别保留状态码、文本和 Tag 键字符串 Map。响应的缺省值仍由原 JS 可空合同表示。原端口 **11029**、PM2
+处理器统一返回 `PromiseHost`，缺少 URL 时通过已完成的 Promise 返回原 400 响应。Promise 的成功和失败回调使用 `RedirectField` union，分别保留状态码、文本和 Tag 键字符串 Map。响应的缺省值仍由原 JS 可空合同表示。原端口 **11029**、PM2
 工作目录、扩展协议和 HTTP 响应保持；本 PR 不合并、部署或重启服务。Node 服务没有前端，不添加 COS/CDN。
 
 缺少 url 参数仍返回 400；上游失败仍返回 500；重定向仍返回 302。上游没有 Location 时仍返回
@@ -20,7 +20,7 @@ String 转换和类型检查。Axios 对象通过受检 JS 接口验证 `get` �
 
 ### 开发与验收
 
-使用 Node 24、Yarn 4.18.0、Caps 0.1.1 和正式 Calcit 0.40.0：
+使用 Node 24、Yarn 4.18.0、Caps 0.1.1 和正式 Calcit 0.41.0：
 
 ```sh
 caps --strict --ci

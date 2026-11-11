@@ -49,7 +49,7 @@
           :schema $ quote Trait
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
-            skir/create-server! on-request! $ Option :some $ {} (:port 11029)
+            skir/create-server! on-request! $ Some $ {} (:port 11029)
           :examples $ []
           :schema $ quote $ Fn (-> js-ffi.node/NodeServerHost) (:features :js-ffi)
         'on-request! $ %{} 'CodeEntry (:doc |)
@@ -86,11 +86,13 @@
                         :headers $ {} $ :Content-Type |text/plain
                         :body $ {} (:message "|Fetch Failed") (:body message)
               (:none)
-                {} (:code 400) (:message "|No URL provided")
-                  :headers $ {} $ :Content-Type |text/plain
-                  :body $ {} $ :message "|No URL provided"
+                js-cast
+                  js/Promise.resolve $ {} (:code 400) (:message "|No URL provided")
+                    :headers $ {} $ :Content-Type |text/plain
+                    :body $ {} $ :message "|No URL provided"
+                  , 'js-ffi.shared/PromiseHost
           :examples $ []
-          :schema $ quote $ Fn skir.schema/Request js-ffi.node/NodeServerResponseHost (-> Dynamic) (:features :js-ffi)
+          :schema $ quote $ Fn skir.schema/Request js-ffi.node/NodeServerResponseHost (-> js-ffi.shared/PromiseHost) (:features :js-ffi)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () (println "|nothing yet") &unit
           :examples $ []
