@@ -66,8 +66,8 @@
                         and (>= status 200) (< status 500)
                     pending $ client .get url options
                     mapped $ pending .then $ fn (response)
-                      hint-fn $ Fn app.main/Response
-                        -> $ Map Tag $ JsNullish app.main/RedirectField
+                      hint-fn $ Fn Response
+                        -> $ Map Tag $ JsNullish RedirectField
                         :features :js-ffi
                       let
                           location $ .-location $ .-headers response
@@ -77,7 +77,7 @@
                           :body nil
                   mapped .catch $ fn (err)
                     hint-fn $ Fn Dynamic
-                      -> $ Map Tag $ JsNullish app.main/RedirectField
+                      -> $ Map Tag $ JsNullish RedirectField
                       :features :js-ffi
                     let
                         message $ js-ffi.contract/expect-string |Axios-rejection $ js/String err
