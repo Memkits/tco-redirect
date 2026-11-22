@@ -53,7 +53,7 @@
               fn (req res) (on-request! req res)
               Some $ {} $ :port 11029
           :examples $ []
-          :schema $ quote $ Fn (-> js-ffi.node/NodeServerHost) (:features :io :js-ffi)
+          :schema $ quote $ Fn (-> js-ffi.node/NodeServerHost) (:features :io :js-ffi :state)
         'on-request! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-request! (req res)
             match
