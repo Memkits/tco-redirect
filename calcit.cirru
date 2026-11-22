@@ -49,9 +49,7 @@
           :schema $ quote Trait
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
-            skir/create-server!
-              fn (req res) (on-request! req res)
-              Some $ {} $ :port 11029
+            skir/create-server! on-request! $ Some $ {} (:port 11029)
           :examples $ []
           :schema $ quote $ Fn (-> js-ffi.node/NodeServerHost) (:features :io :js-ffi :state)
         'on-request! $ %{} 'CodeEntry (:doc |)

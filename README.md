@@ -8,10 +8,10 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### 使用者影响
 
-本候选同步到正式 Calcit CLI / `@calcit/procs` **0.44.0**，使用已发布 Skir **0.0.42**。
+本候选同步到正式 Calcit CLI / `@calcit/procs` **0.44.0**，使用已发布 Skir **0.0.43**。
 传递依赖使用正式 Router **0.12.11**、Respo **0.19.13** 和 JS-FFI **0.2.19**。服务部署前需重新安装依赖并生成 JS。
 
-服务入口声明 Skir 所需的 `:state` 副作用，处理器统一返回 `PromiseHost`，缺少 URL 时通过已完成的 Promise 返回原 400 响应。Promise 的成功和失败回调使用 `RedirectField` union，分别保留状态码、文本和 Tag 键字符串 Map。响应的缺省值仍由原 JS 可空合同表示。原端口 **11029**、PM2
+服务入口直接传入声明了 IO 效果的具名请求处理器，并声明 Skir 所需的 `:state` 副作用；处理器统一返回 `PromiseHost`，缺少 URL 时通过已完成的 Promise 返回原 400 响应。Promise 的成功和失败回调使用 `RedirectField` union，分别保留状态码、文本和 Tag 键字符串 Map。响应的缺省值仍由原 JS 可空合同表示。原端口 **11029**、PM2
 工作目录、扩展协议和 HTTP 响应保持；本 PR 不合并、部署或重启服务。Node 服务没有前端，不添加 COS/CDN。
 
 缺少 url 参数仍返回 400；上游失败仍返回 500；重定向仍返回 302。上游没有 Location 时仍返回
