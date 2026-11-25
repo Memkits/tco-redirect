@@ -8,8 +8,8 @@ Try this <http://tco.tiye.me/?url=https://t.co/ftbaWdHLV0>.
 
 ### 使用者影响
 
-本候选同步到正式 Calcit CLI / `@calcit/procs` **0.44.0**，使用已发布 Skir **0.0.43**。
-传递依赖使用正式 Router **0.12.11**、Respo **0.19.13** 和 JS-FFI **0.2.19**。服务部署前需重新安装依赖并生成 JS。
+本候选同步到正式 Calcit CLI / `@calcit/procs` **0.45.1**，使用已发布 Skir **0.0.44**。
+传递依赖使用正式 Router **0.12.17**、Respo **0.19.18** 和 JS-FFI **0.2.24**。服务部署前需重新安装依赖并生成 JS。
 
 服务入口直接传入声明了 IO 效果的具名请求处理器，并声明 Skir 所需的 `:state` 副作用；处理器统一返回 `PromiseHost`，缺少 URL 时通过已完成的 Promise 返回原 400 响应。Promise 的成功和失败回调使用 `RedirectField` union，分别保留状态码、文本和 Tag 键字符串 Map。响应的缺省值仍由原 JS 可空合同表示。原端口 **11029**、PM2
 工作目录、扩展协议和 HTTP 响应保持；本 PR 不合并、部署或重启服务。Node 服务没有前端，不添加 COS/CDN。
@@ -20,7 +20,7 @@ String 转换和类型检查。Axios 对象通过受检 JS 接口验证 `get` �
 
 ### 开发与验收
 
-使用 Node 24、Yarn 4.18.0、Caps 0.1.1 和正式 Calcit 0.44.0：
+使用 Node 24、Yarn 4.18.0、Caps 0.1.1 和正式 Calcit 0.45.1：
 
 ```sh
 caps --strict --ci
@@ -40,7 +40,7 @@ corepack yarn build
 新依赖解析等待 60 分钟，无单包豁免；immutable 复用已有 lock 解析。Actions 使用精确正式 tag，
 维护者接受 tag 可移动风险，不增加 SHA pin 检查脚本。
 
-真实回环验收覆盖缺少参数、有效重定向、无 Location、上游失败四个场景，使用随机回环端口；
+此前 0.44.0 的真实回环验收覆盖缺少参数、有效重定向、无 Location、上游失败四个场景，使用随机回环端口；本次 0.45.1 尚未重复该验收；
 不访问公开 t.co，不监听生产端口，也不代表生产服务或扩展安装验收。源码已迁移的端口 Option、
 query 字符串解码与空 Location 处理均保持，不改变现有接收协议。
 
